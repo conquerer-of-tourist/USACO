@@ -1,0 +1,26 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build (g++-15)",
+      "type": "shell",
+      "command": "/opt/homebrew/bin/g++-15",
+      "args": [
+        "-std=c++17",
+        "-O0",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-pedantic",
+        "${file}",
+        "-o",
+        "${workspaceFolder}/a.out"
+      ],
+      "problemMatcher": ["$gcc"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

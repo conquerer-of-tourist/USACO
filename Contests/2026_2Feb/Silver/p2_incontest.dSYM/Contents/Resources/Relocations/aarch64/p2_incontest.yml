@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/hengsheng/code/USACO/2026_JanEnd_Silver/p2_incontest'
+relocations:     []
+...
