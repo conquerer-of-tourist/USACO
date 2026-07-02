@@ -15,19 +15,30 @@ int main() {
     cin >> s;
     vector<int> suffix (s.length() + 1, 0);
     vector<int> p10sfx (s.length() + 1, 0);
-    p10sfx[s.length()] = 0;
-    for (int i = s.length() - 1; i >= 0; i--) {
-        //
+    p10sfx[s.length()] = 1;
+    p10sfx[s.length() - 1] = 1;
+    for (int i = s.length() - 2; i >= 0; i--) {
+        p10sfx[i] = (p10sfx[i + 1] * 10) % 2019;
     }
 
     for (int i = s.length() - 1; i >= 0; i--) {
         char curr = s[i];
         int  currVal = curr - '0';
-        int  currValm2019 = (currVal * p10sfx[i + 1]) % 2019;
+        int  currValm2019 = (currVal * p10sfx[i]) % 2019;
         suffix[i] = suffix[i + 1] + currValm2019;
         suffix[i] %= 2019;
     }
     map<int, int> freq;
     
-    //
+    for (auto& val : suffix) {
+        freq[val]++;
+    }
+
+    int answer = 0;
+    for (auto& fre : freq) {
+        int k = fre.second;
+        answer += (k) * (k - 1) / 2;
+    }
+
+    cout << answer << '\n';
 }
