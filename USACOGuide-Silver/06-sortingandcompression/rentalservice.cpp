@@ -16,23 +16,25 @@ using namespace std;
 
 int main()
 {
-    int n, m, r;
+    freopen("rental.in", "r", stdin);
+    freopen("rental.out", "w", stdout);
+
+    ll n, m, r;
     cin >> n >> m >> r;
 
-    int gallonsRemain = 0;
-
-    vector<int> cows (n);
+    vector<ll> cows (n);
     for (auto& cow : cows) {
         cin >> cow;
-        gallonsRemain += cow;
     }
 
-    sort(cows.begin(), cows.end());
+    sort(cows.rbegin(), cows.rend());
 
     vector<p> stores (m);
-    for (int i = 0; i < m; i++) {
+    for (ll i = 0; i < m; i++) {
         cin >> stores[i].second >> stores[i].first;
     }
+
+    sort(stores.rbegin(), stores.rend());
 
     vector<ll> farmers (r);
     for (auto& farmer : farmers) {
@@ -40,65 +42,118 @@ int main()
     }
     sort(farmers.rbegin(), farmers.rend());
 
-    int curFirstCow = 0;
-    int curLastCow = n - 1;
-    int curStore = 0;
+    ll bestAnswer = 0;
+    ll currStore = 0;
 
-    for (int i = 0; i < r; i++) {
-        int curCowGallons = cows[curFirstCow];
-        
+    vector<ll> milkingProfit (n + 1, 0);
+
+    for (ll i = 1; i <= n; i++) {
+        ll newMilk = cows[i - 1];
+
+        milkingProfit[i] = milkingProfit[i - 1];
+
+        while (newMilk > 0 && currStore < m) {
+            ll amountSold = min(newMilk, stores[currStore].second);
+            milkingProfit[i] += amountSold * stores[currStore].first;
+
+            newMilk -= amountSold;
+            stores[currStore].second -= amountSold;
+
+            if (stores[currStore].second == 0) {
+                currStore++;
+            }
+        }
     }
+
+    vector<ll> rentalProfit (n + 1, 0);
+
+    for (ll i = 1; i <= n; i++) {
+        rentalProfit[i] = rentalProfit[i - 1] + ((i <= r) ? farmers[i - 1] : 0);
+    }
+    
+    for (ll k = 0; k <= n; k++) {
+        ll total = milkingProfit[k] + rentalProfit[n - k];
+        bestAnswer = max(bestAnswer, total);
+    }
+    cout << bestAnswer << '\n';
 }
 
-/*
+// /*
 
-Cows
-=============
+//     Information
+//     =================
+//     Hengsheng Wang
+//     Contest: USACO 2018 January Silver Contest; Problem 2. Rental Service
+//     Date Started: July 14th, 2026
 
-1 2 4 6 7
+// */
 
-Stores are wiling to offer the following quantities:
+// #include <bits/stdc++.h>
+// using namespace std;
 
-10 gallons for 25 cents each
-15 gallons for 15 cents each
-2 gallons for 10 cents each
+// #define ll long long
+// #define p pair<long long, long long>
 
-The neighbors offer 
-250 a day
-100 a day
-80 a day
-40 a day
+// int main()
+// {
+//     ll n, m, r;
+//     cin >> n >> m >> r;
 
-The thing is that each cow is only able to commit to one thing:
-- either the store milk
-- or giving it to the neighbor
+//     ll gallonsRemain = 0;
 
-there are two directions that we can look in:
-- we can either look at the most milk-producing cows
-- this will allow us to maximize the amount of money to make by giving them to a store
-- the amount of money that this cow would be worth is ∑ [(# gallons) * (amt/gal)]
+//     vector<ll> cows (n);
+//     for (auto& cow : cows) {
+//         cin >> cow;
+//         gallonsRemain += cow;
+//     }
 
-instead, we could
-wait actuall yea
+//     sort(cows.begin(), cows.end());
 
-we're just always maximizing how much we can make with the optimal cows
-it's like
-ok so basically we can iterate through the (neighbors)
-* and the neighbors are in decreasing order
-* and then each time, we have all of the cows, right
-* so we look: for the MAXIMALLY PRODUCING COW
-    * is it more optimal to:
-        * ONE: take the minimally producing cow and sell it
-        * or TWO: take the maximally producing cow and produce milk?
+//     vector<p> stores (m);
+//     for (ll i = 0; i < m; i++) {
+//         cin >> stores[i].second >> stores[i].first;
+//     }
 
-so:
+//     sort(stores.rbegin(), stores.rend());
 
-for (iteration through the farmers; from greatest to least)
-* so look at the current amount we could make from selling to a store:
-    * just give all of our gallons to the store
-    * or we run out of cows; done.
+//     vector<ll> farmers (r);
+//     for (auto& farmer : farmers) {
+//         cin >> farmer;
+//     }
+//     sort(farmers.rbegin(), farmers.rend());
 
-//
+//     ll curFirstCow = 0;
+//     ll curLastCow = n - 1;
+//     ll curStore = 0;
+//     ll answer = 0;
 
+//     for (ll i = 0; i < r; i++) {
+//         while (true) {
+//             ll curCowGallons = cows[curFirstCow];
 
-*/
+//             if (curCowGallons > stores[curStore].second) {
+//                 // this means we would have to overlap it to other stores as well
+//                 // so we can just calculate the amount that for this store; move on?
+//                 // and compare it to the day for a rental?
+//             }
+//             else if (curCowGallons == stores[curStore].second) {
+//                 answer += curCowGallons * stores[curStore].first;
+//                 stores[curStore].second -= curCowGallons;
+//                 curStore++;
+//                 curFirstCow++;
+//             }
+//             else {
+//                 if (farmers[i] > curCowGallons * stores[curStore].first) {
+//                     answer += farmers[i];
+//                     curLastCow--;
+//                     break;
+//                 }
+//                 else {
+//                     answer += curCowGallons * stores[curStore].first;
+//                     stores[curStore].second -= curCowGallons;
+//                     curFirstCow++;
+//                 }
+//             }
+//         }
+//     }
+// }

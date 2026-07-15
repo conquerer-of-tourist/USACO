@@ -30,7 +30,7 @@ int main()
     map<ll, ll> freq;
     sort(events.begin(), events.end());
     ll curr = 1;
-    for (ll i = 1; i <= n; i++) {
+    for (int i = 1; i <= n; i++) {
         freq[i] = 0;
     }
     for (ll i = 1; i < events.size(); i++) {
