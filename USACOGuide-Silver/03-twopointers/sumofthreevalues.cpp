@@ -3,7 +3,7 @@
     Information
     =====================
     Hengsheng Wang
-    July 9th, 13th, 2026
+    July 9th, 13th, 20th 2026
     CSES Problemset: Sum of Three Values
 
 */
@@ -19,37 +19,40 @@ int main()
     ll n, x;
     cin >> n >> x;
     
-    vector<ll> vals (n);
+    vector<pair<ll, ll>> vals (n);
 
-    for (auto& val : vals) {
-        cin >> val;
+    for (int i = 0; i < n; i++) {
+        cin >> vals[i].first;
+        vals[i].second = i + 1;
     }
 
-    // sort(vals.begin(), vals.end());
-
-    if (n <= 2) {
-        cout << "IMPOSSIBLE" << '\n';
-        return 0;
-    }
+    sort(vals.begin(), vals.end());
 
     for (int i = 0; i < n - 2; i++) {
-        int needed = x - vals[i];
-        for (int j = 1; j < n - 1; j++) {
-            ll k = needed - vals[j].first;
-            auto it = vals.find(k);
+        int curNeed = x - vals[i].first;
 
-            if (it == vals.end()) {
-                continue;
+        int l = i + 1;
+        int r = n - 1;
+        int curSum = vals[l].first + vals[r].first;
+        while (true) {
+            if (l >= r) {
+                break;
             }
-
-            if (k == val.first && val.second.size() >= 2) {
-                cout << val.second[0] << " " << val.second[1] << '\n';
+            if (curSum == curNeed) {
+                cout << vals[i].second << " " 
+                     << vals[l].second << " " 
+                     << vals[r].second << '\n';
                 return 0;
             }
-            else if (k != val.first) {
-                cout << val.second[0] << " " << it->second[0] << '\n';
-                return 0;
+            else if (curSum < curNeed) {
+                l++;
+                curSum += (vals[l].first - vals[l - 1].first);
+            }
+            else {
+                r--;
+                curSum += (vals[r].first - vals[r + 1].first);
             }
         }
     }
+    cout << "IMPOSSIBLE" << '\n';
 }
