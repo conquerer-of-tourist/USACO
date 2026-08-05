@@ -2,7 +2,7 @@
 
     August 4th Practice Session
     Hengsheng Wang
-    USACO 2015 December Contest - High Card Wins
+    USACO 2015 December Contest - P2. High Card Wins
 
 */
 
@@ -21,6 +21,7 @@ int main()
         cin >> val;
         all[val - 1] = 1;
     }
+    sort(vals.begin(), vals.end());
     vector<int> ourVals;
     for (int i = 0; i < 2 * n; i++) {
         if (all[i] == 0) {
@@ -32,15 +33,18 @@ int main()
     int counter = 0;
     for (int i = 0; i < n; i++) {
         int currOpponent = vals[i];
+        while (j < n) {
+            if (ourVals[j] < currOpponent) {
+                j++;
+            }
+            else {
+                j++;
+                counter++;
+                break;
+            }
+        }
         if (j == n) {
             break;
-        }
-        if (ourVals[j] > currOpponent) {
-            counter++;
-            j++;
-        }
-        else {
-            j++;
         }
     }
     cout << counter << '\n';
