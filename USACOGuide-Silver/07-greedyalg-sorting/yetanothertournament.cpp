@@ -9,19 +9,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#define ll long long
+
 void solve()
 {
-    int n, m;
+    ll n, m;
     cin >> n >> m;
-    vector<int> a (n);
+    vector<ll> a (n);
     for (auto& aa : a) {
         cin >> aa;
     }
+    auto og = a;
     sort(a.begin(), a.end());
 
-    vector<int> prefix (n + 1, 0);
-    int maximal = 0;
-    for (int i = 1; i <= n; i++) {
+    vector<ll> prefix (n + 1, 0);
+    ll maximal = 0;
+    for (ll i = 1; i <= n; i++) {
         prefix[i] = prefix[i - 1] + a[i - 1];
         if (prefix[i] <= m) {
             maximal = i;
@@ -35,13 +38,18 @@ void solve()
         cout << 1 << '\n';
     }
     else {
-        //
+        if (prefix[maximal - 1] + og[maximal] <= m) {
+            cout << n - maximal << '\n';
+        }
+        else {
+            cout << n - maximal + 1 << '\n';
+        }
     }
 }
 
 int main()
 {
-    int t;
+    ll t;
     cin >> t;
     while (t--) {
         solve();
