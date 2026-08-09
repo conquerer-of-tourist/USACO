@@ -18,17 +18,43 @@ bool check(vector<pair<ll, ll>>& positions, ll dist)
 {
     int counter = 1;
     ll lastCow = positions[0].first;
-    ll blockIndex = 0;
     
-    for (int i = 1; i < n; i++) {
-        int nextCow = lastCow + dist;
+    for (int i = 0; i < m; i++) {
+        if (counter >= n) {
+            return true;
+        }
+        ll nextCow = lastCow + dist;
+        if (nextCow < positions[i].first) {
+            lastCow = positions[i].first;
+            counter++;
+            nextCow = lastCow + dist;
+            while (nextCow <= positions[i].second) {
+                lastCow = nextCow;
+                nextCow = lastCow + dist;
+                counter++;
+            }
+        }
+        else if (nextCow <= positions[i].second) {
+            while (nextCow <= positions[i].second) {
+                lastCow = nextCow;
+                nextCow = lastCow + dist;
+                counter++;
+            }
+        }
+        else {
+            continue;
+        }
     }
+    if (counter >= n) {
+        return true;
+    }
+    return false;
 }
 
 int main()
 {
-    // freopen("socdist.in", "r", stdin);
-    // freopen("socdist.out", "w", stdout);
+    freopen("socdist.in", "r", stdin);
+    freopen("socdist.out", "w", stdout);
 
     cin >> n >> m;
     vector<pair<ll, ll>> positions (m);
@@ -37,17 +63,17 @@ int main()
     }
     sort(positions.begin(), positions.end());
 
-    ll l = 0, r = 0;
-    ll ans = maximum;
+    ll l = 1, r = maximum;
+    ll ans = 0;
 
     while (l <= r) {
         ll mid = l + (r - l) / 2;
         if (check(positions, mid)) {
-            ans = min(mid, ans);
+            ans = max(mid, ans);
             l = mid + 1;
         }
         else {
-            r = mid;
+            r = mid - 1;
         }
     }
 
