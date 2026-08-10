@@ -16,7 +16,7 @@ bool check(vector<int>& cows, int t) {
         stage.push(cows[i]);
     }
     int maxTime = 0;
-    for (int i = n - 1; i >= t; i--) {
+    for (int i = t; i < n; i++) {
         int curr = stage.top();
         stage.pop();
         stage.push(cows[i] + curr);
@@ -30,12 +30,13 @@ bool check(vector<int>& cows, int t) {
 
 int main()
 {
+    freopen("cowdance.in", "r", stdin);
+    freopen("cowdance.out", "w", stdout);
     cin >> n >> tmax;
     vector<int> cows (n);
     for (auto& cow : cows) {
         cin >> cow;
     }
-    sort(cows.begin(), cows.end());
 
     int l = 1, r = n;
     int answer = n;
