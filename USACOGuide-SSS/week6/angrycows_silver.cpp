@@ -17,6 +17,9 @@ bool check(vector<int>& targets, int r)
     int curIndex = 0;
     while (used < k) {
         used++;
+        if (curIndex >= n) {
+            break;
+        }
         int firstHit = targets[curIndex];
         int nextIndex = curIndex + 1;
         while (nextIndex < n && targets[nextIndex] - firstHit <= 2 * r) {
@@ -24,13 +27,16 @@ bool check(vector<int>& targets, int r)
         }
         curIndex = nextIndex;
     }
-    if (curIndex == n - 1) {
-        //
+    if (curIndex >= n) {
+        return true;
     }
+    return false;
 }
 
 int main()
 {
+    freopen("angry.in", "r", stdin);
+    freopen("angry.out", "w", stdout);
     cin >> n >> k;
     vector<int> targets (n);
     for (auto& targ : targets) {
