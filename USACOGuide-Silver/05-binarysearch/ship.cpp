@@ -65,12 +65,12 @@ int main()
     cin >> n;
     cin >> s;
 
-    ll l = 0, r = 1e10;
-    ll answer = r;
+    ll l = 0, r = 1e17;
+    ll answer = -1;
     while (l <= r) {
         ll mid = l + (r - l) / 2;
         if (check(mid)) {
-            answer = min(answer, mid);
+            answer = mid;
             r = mid - 1;
         }
         else {
