@@ -15,9 +15,21 @@ using namespace std;
 
 ll n, k;
 
-bool check(vector<ll> arr, ll mid)
+bool check(vector<ll>& arr, ll mid)
 {
-    // determien whether it workrs
+    int lIndex = 0, lCount = 0;
+    int rIndex = 0, rCount = 0;
+
+    int total = 0;
+
+    //
+
+/*
+
+
+
+
+*/
 }
 
 int main()

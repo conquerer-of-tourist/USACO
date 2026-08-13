@@ -21,11 +21,11 @@ bool check(int mid)
         int distNeed = 1e9;
         if (it != packmen.begin()) {
             it--;
-            distNeed = eat - *it;
+            distNeed = abs(eat - *it);
         }
         it++;
         if (it != packmen.end()) {
-            distNeed = min(*it - eat, distNeed);
+            distNeed = min(abs(*it - eat), distNeed);
         }
         if (distNeed > mid) {
             return false;
@@ -36,7 +36,8 @@ bool check(int mid)
 
 int main()
 {
-    cin >> n >> s;
+    cin >> n;
+    cin >> s;
 
     for (int i = 0; i < n; i++) {
         if (s[i] == 'P') {
