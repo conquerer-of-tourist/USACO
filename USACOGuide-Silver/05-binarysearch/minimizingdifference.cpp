@@ -17,19 +17,80 @@ ll n, k;
 
 bool check(vector<ll>& arr, ll mid)
 {
-    int lIndex = 0, lCount = 0;
-    int rIndex = 0, rCount = 0;
+    map<ll, ll> occur;
+    for (auto& val : arr) {
+        occur[val]++;
+    }
 
-    int total = 0;
+    ll used = 0;
+    while (true) {
+        ll leftBound = (*occur.begin()).first;
+        ll leftCount = (*occur.begin()).second;
 
-    //
+        ll rightBound = (*occur.rbegin()).first;
+        ll rightCount = (*occur.rbegin()).second;
 
-/*
+        if (rightBound - leftBound <= mid) {
+            return true;
+        }
 
+        if (leftCount < rightCount) {
+            auto secondOne = occur.begin(); secondOne++;
+            ll nextVal = (*secondOne).first;
+            ll needHere = (nextVal - leftBound) * leftCount;
 
+            if (used + needHere <= k) {
+                occur[nextVal] += leftCount;
+                used += needHere;
+                occur.erase(occur.begin());
+            }
+            else {
+                ll required = rightBound - mid;
+                if (required >= nextVal) {
+                    return false;
+                }
+                else {
+                    needHere = (required - leftBound) * leftCount;
+                    if (used + needHere > k) {
+                        return false;
+                    }
+                    occur.erase(occur.begin());
+                    occur[required] = leftCount;
+                    used += needHere;
+                }
+            }
+        }
+        else {
+            auto adjacentOne = occur.rbegin(); adjacentOne++;
 
+            ll nextVal = (*adjacentOne).first;
+            ll needHere = (rightBound - nextVal) * rightCount;
 
-*/
+            if (used + needHere <= k) {
+                occur[nextVal] += rightCount;
+                used += needHere;
+                auto removeOne = occur.end(); removeOne--;
+                occur.erase(removeOne);
+            }
+            else {
+                ll required = leftBound + mid;
+                if (required <= nextVal) {
+                    return false;
+                }
+                else {
+                    needHere = (rightBound - required) * rightCount;
+                    if (used + needHere > k) {
+                        return false;
+                    }
+                    auto removeOne = occur.end(); removeOne--;
+                    occur.erase(removeOne);
+                    occur[required] = rightCount;
+                    used += needHere;
+                }
+            }
+        }
+    }
+    return true;
 }
 
 int main()
@@ -54,4 +115,6 @@ int main()
             l = mid + 1;
         }
     }
+    cout << answer << '\n';
+    return 0;
 }
