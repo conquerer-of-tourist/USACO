@@ -9,31 +9,46 @@
 using namespace std;
 
 #define v vector
+#define ll long long
 
 struct cow {
-    int x, y, range;
+    ll x, y, range;
 };
+
+ll dfs(v<v<ll>>& adj, v<ll>& visited, ll i)
+{
+    ll returnVal = 1;
+    visited[i] = 1;
+    for (auto& adjVal : adj[i]) {
+        if (visited[adjVal] == 0) {
+            returnVal += dfs(adj, visited, adjVal);
+        }
+    }
+    return returnVal;
+}
 
 int main()
 {
-    int n;
+    freopen("moocast.in", "r", stdin);
+    freopen("moocast.out", "w", stdout);
+    ll n;
     cin >> n;
-    v<v<int>> adj (n);
+    v<v<ll>> adj (n);
     v<cow> cows (n);
     //
     for (auto& c : cows) {
         cin >> c.x >> c.y >> c.range;
     }
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
+    for (ll i = 0; i < n; i++) {
+        for (ll j = 0; j < n; j++) {
             if (i != j) {
-                int xloc1 = cows[i].x;
-                int xloc2 = cows[j].x;
-                int yloc1 = cows[i].y;
-                int yloc2 = cows[j].y;
-                int distSQ = (xloc1 - xloc2) * (xloc1 - xloc2) + 
+                ll xloc1 = cows[i].x;
+                ll xloc2 = cows[j].x;
+                ll yloc1 = cows[i].y;
+                ll yloc2 = cows[j].y;
+                ll distSQ = (xloc1 - xloc2) * (xloc1 - xloc2) + 
                              (yloc1 - yloc2) * (yloc1 - yloc2);
-                int rangeSQ = cows[i].range * cows[i].range;
+                ll rangeSQ = cows[i].range * cows[i].range;
 
                 if (rangeSQ >= distSQ) {
                     adj[i].push_back(j);
@@ -41,4 +56,12 @@ int main()
             }
         }
     }
+
+    ll bestAns = 1;
+    for (ll i = 0; i < n; i++) {
+        vector<ll> visited (n, 0);
+        ll ansHere = dfs(adj, visited, i);
+        bestAns = max(bestAns, ansHere);
+    }
+    cout << bestAns << '\n';
 }
