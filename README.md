@@ -6,7 +6,9 @@
 
 ## Directory
 * Code from my USACO contests
-* Programs written for the USACO Guide Silver Study Guide Class
+* Code written for:
+  * USACO Guide | Silver Section problem selection
+  * Silver Self-Study Class
 * Programs written for the 2025 USACO Guide Silver Class
 * Programs written for the 2024 USACO Guide Bronze Class
 * USACO Guide Silver Section Solutions
