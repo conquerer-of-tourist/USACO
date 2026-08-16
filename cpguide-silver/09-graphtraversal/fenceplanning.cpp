@@ -34,7 +34,7 @@ void dfs(int& minX, int& minY, int& maxX, int& maxY, int ind)
 int main()
 {
     freopen("fenceplan.in", "r", stdin);
-    freopen("fenceplan.in", "w", stdout);
+    freopen("fenceplan.out", "w", stdout);
     int n, m;
     cin >> n >> m;
 
