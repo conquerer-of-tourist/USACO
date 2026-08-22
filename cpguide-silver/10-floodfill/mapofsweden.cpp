@@ -11,50 +11,64 @@ using namespace std;
 
 #define ll long long
 
-int swedenComponent = -1;
+int swedenSize = 0;
+int r, c, u, s1, s2;
 
-void dfs(   vector<vector<int>>& grid,
-            vector<vector<int>>& visited, 
-            map<int, int>& components, int i, int j) {
-    //
+void dfs(vector<vector<int>>& grid,
+         vector<vector<int>>& visited,
+         int i, int j) {
+
+    if (i < 0 || i >= r || j < 0 || j >= c) return;
+    if (grid[i][j] == 0) return;
+    if (visited[i][j]) return;
+
+    visited[i][j] = 1;
+    swedenSize++;
+
+    dfs(grid, visited, i - 1, j);
+    dfs(grid, visited, i + 1, j);
+    dfs(grid, visited, i, j - 1);
+    dfs(grid, visited, i, j + 1);
 }
 
 int main()
 {
-    int r, c, u;
     cin >> r >> c >> u;
     vector<vector<int>> grid (r, vector<int> (c, 0));
     vector<vector<int>> visited (r, vector<int> (c, 0));
-    map<int, int> components;
-    for (auto& row : grid) {
-        for (auto& cell : grid) {
-            char a;
-            cin >> a;
-            if (a == '.') a = 0;
-            if (a == '#') a = 1;
-            if (a == 'S') a = 2;
-        }
-    }
-    int curLabel = 0;
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
-            if (visited[i][j] == 0) {
-                visited[i][j] = 1;
-                components[i] = 0;
-                dfs(grid, visited, components);
+            char a;
+            cin >> a;
+            if (a == '.') grid[i][j] = 0;
+            if (a == '#') grid[i][j] = 1;
+            if (a == 'S') {
+                grid[i][j] = 2;
+                s1 = i;
+                s2 = j;
             }
         }
     }
+    dfs(grid, visited, s1, s2);
+    cout << swedenSize << '\n';
+    
+    while (u--) {
+        int a, b;
+        cin >> a >> b;
+        a--; b--;
+        grid[a][b] = 1;
+
+        bool connectsToSweden = false;
+
+        if (a > 0 && visited[a - 1][b])     connectsToSweden = true;
+        if (b > 0 && visited[a][b - 1])     connectsToSweden = true;
+        if (a < r - 1 && visited[a + 1][b]) connectsToSweden = true;
+        if (b < c - 1 && visited[a][b + 1]) connectsToSweden = true;
+
+        if (connectsToSweden == true) {
+            dfs(grid, visited, a, b);
+        }
+
+        cout << swedenSize << '\n';
+    }
 }
-
-/*
-
-    Current Thoughts:
-        * For each new value, first check all four surroundings
-        * If not connected to anything; turn it into a new component
-        * If currently connected to the first component; we're automatically increasing by 1
-        * Keep a map or something that tracks:
-        *       {key: component, value: area}
-        * And this way, whenever we connect to the first component; remove this from map
-
-*/
