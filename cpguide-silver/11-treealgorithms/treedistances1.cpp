@@ -11,56 +11,92 @@ using namespace std;
 
 #define ve vector
 
-int n;
-
-void dfs(ve<ve<int>>& adj, ve<int>& visited, int curr, int depth,
-        map<int, int>& depths) {
-    for (auto& conne : adj[curr]) {
-        if (!visited[conne]) {
-            visited[conne] = 1;
-            depths[conne] = depth + 1;
-            dfs(adj, visited, conne, depth + 1, depths);
-        }
-    }
-}
-
-void dfs2(ve<ve<int>>& adj, ve<int>& visited, 
-         int curr, int depth, ve<int>& depths) {
-    for (auto& conn : adj[curr]) {
-        if (!visited[conn]) {
-            visited[conn] = 1;
-            depths[conn] = depth + 1;
-            dfs2(adj, visited, conn, depth + 1, depths);
-        }
-    }
-}
-
 int main()
 {
+    int n;
     cin >> n;
     ve<ve<int>> adj (n);
     for (int i = 0; i < n - 1; i++) {
         int a, b;
         cin >> a >> b;
+        a--; b--;
         adj[a].push_back(b);
         adj[b].push_back(a);
     }
-    map<int, int> depths;
-    for (int i = 0; i < n; i++) {
-        depths[i] = 0;
-    }
     ve<int> visited (n, 0);
-    visited[0] = 1;
-    for (auto& conn : adj[0]) {
-        dfs(adj, visited, conn, 0, depths);
+    stack<pair<int, int>> vals;
+    int deepestNode = 0, deepestDepth = 0;
+    vals.push({0, 0});
+    while (!vals.empty()) {
+        int node = vals.top().first;
+        int depth = vals.top().second;
+        vals.pop();
+
+        visited[node] = 1;
+        for (auto& neighbor : adj[node]) {
+            if (!visited[neighbor]) {
+                visited[neighbor] = 1;
+                if (deepestDepth < depth + 1) {
+                    deepestNode = neighbor;
+                    deepestDepth = depth + 1;
+                }
+                vals.push({neighbor, depth + 1});
+            }
+        }
     }
-    auto it = depths.end();
-    int k1 = (*it).first; it--;
-    int k2 = (*it).first;
+    fill(visited.begin(), visited.end(), 0);
+    int deepestNode2 = 0, deepestDepth2 = 0;
+    vals.push({deepestNode, 0});
+    while (!vals.empty()) {
+        int node = vals.top().first;
+        int depth = vals.top().second;
+        vals.pop();
 
-    ve<int> from1 (n, 0); dfs2(adj, visited, k1, 0, from1);
-    ve<int> from2 (n, 0); dfs2(adj, visited, k2, 0, from2);
+        visited[node] = 1;
+        for (auto& neighbor : adj[node]) {
+            if (!visited[neighbor]) {
+                visited[neighbor] = 1;
+                if (deepestDepth2 < depth + 1) {
+                    deepestNode2 = neighbor;
+                    deepestDepth2 = depth + 1;
+                }
+                vals.push({neighbor, depth + 1});
+            }
+        }
+    }
+    fill(visited.begin(), visited.end(), 0);
+    vector<int> from1 (n, 0), from2 (n, 0);
+    vals.push({deepestNode, 0});
+    while (!vals.empty()) {
+        int node = vals.top().first;
+        int depth = vals.top().second;
+        vals.pop();
 
+        visited[node] = 1;
+        for (auto& neighbor : adj[node]) {
+            if (!visited[neighbor]) {
+                visited[neighbor] = 1;
+                from1[neighbor] = depth + 1;
+                vals.push({neighbor, depth + 1});
+            }
+        }
+    }
+    fill(visited.begin(), visited.end(), 0);
+    vals.push({deepestNode2, 0});
+    while (!vals.empty()) {
+        int node = vals.top().first;
+        int depth = vals.top().second;
+        vals.pop();
+
+        visited[node] = 1;
+        for (auto& neighbor : adj[node]) {
+            if (!visited[neighbor]) {
+                visited[neighbor] = 1;
+                from2[neighbor] = depth + 1;
+                vals.push({neighbor, depth + 1});
+            }
+        }
+    }
     for (int i = 0; i < n; i++) {
         cout << max(from1[i], from2[i]) << " ";
     }
