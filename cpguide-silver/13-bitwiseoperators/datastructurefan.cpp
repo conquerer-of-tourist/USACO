@@ -21,39 +21,15 @@ void solve() {
         cin >> val;
     }
 
-    ll str;
-    cin >> str;
-    string strver = to_string(str);
-
-    ll total0 = 0;
-    ll total1 = 0;
-
-    for (int i = 0; i < n; i++) {
-        if (str & (1 << i)) {
-            total1 = total1 ^ vals[i];
-        }
-        else {
-            total0 = total0 ^ vals[i];
-        }
-    }
-
+    string s;
+    cin >> s;
+    
     int q;
     cin >> q;
     for (int i = 0; i < q; i++) {
         int version;
         cin >> version;
-        if (version == 2) {
-            int g;
-            cin >> g;
-            if (g == 1) cout << total1 << '\n';
-            else        cout << total0 << '\n';
-        }
-        else {
-            int l, r;
-            cin >> l >> r;
-            int replacement = 0;
-
-        }
+        //
     }
 }
 
