@@ -4,7 +4,7 @@
     Codeforces Round 985 (Division 3)
 
     Hengsheng W.
-    August 28, 2026
+    August 28, 30, 2026
 
 */
 
@@ -14,28 +14,58 @@ using namespace std;
 #define ll long long
 
 void solve() {
-    int n;
+    ll n;
     cin >> n;
-    vector<int> vals (n);
+    vector<ll> vals (n);
     for (auto& val : vals) {
         cin >> val;
     }
 
     string s;
     cin >> s;
-    
-    int q;
-    cin >> q;
-    for (int i = 0; i < q; i++) {
-        int version;
-        cin >> version;
-        //
+
+    ll total0 = 0;
+    ll total1 = 0;
+
+    for (ll i = 0; i < n; i++) {
+        if (s[i] == '0') {
+            total0 = total0 ^ vals[i];
+        }
+        else {
+            total1 = total1 ^ vals[i];
+        }
     }
+
+    vector<ll> pref (n + 1, 0);
+    for (ll i = 1; i <= n; i++) {
+        pref[i] = pref[i - 1] ^ vals[i - 1];
+    }
+    
+    ll q;
+    cin >> q;
+    for (ll i = 0; i < q; i++) {
+        ll version;
+        cin >> version;
+        if (version == 1) {
+            ll l, r;
+            cin >> l >> r;
+            ll currRange = pref[r] ^ pref[l - 1];
+            total0 ^= currRange;
+            total1 ^= currRange;
+        }
+        else if (version == 2) {
+            ll k;
+            cin >> k;
+            if (k == 0) cout << total0 << " ";
+            if (k == 1) cout << total1 << " ";
+        }
+    }
+    cout << '\n';
 }
 
 int main()
 {
-    int t;
+    ll t;
     cin >> t;
     while (t--) solve();
 }
