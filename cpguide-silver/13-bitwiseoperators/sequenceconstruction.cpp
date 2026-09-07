@@ -18,20 +18,20 @@ void solve()
     ll totalSum = 0;
     for (int i = 0; i < 6; i++) {
         if ((k >> i) % 2 == 1) {
-            ll curr = (1 << (i + 1)) - 1;
+            ll curr = (1LL << (1LL << i)) - 1;
             totalSum += curr;
             vals.push_back(curr);
         }
     }
-    if (totalSum > m || ((k - totalSum == 1) && k % 2 == 0)) {
+    if (totalSum > m || ((m - totalSum == 1) && (k % 2 == 0))) {
         cout << -1 << '\n';
         return;
     }
-    if ((k - totalSum) % 2 == 0) {
-        vals.push_back((k - totalSum) / 2);
-        vals.push_back((k - totalSum) / 2);
+    if ((m - totalSum) % 2 == 0) {
+        vals.push_back((m - totalSum) / 2);
+        vals.push_back((m - totalSum) / 2);
     }
-    else if ((k - totalSum) % 2 == 1) {
+    else if ((m - totalSum) == 1) {
         vals.erase(vals.begin());
         vals.push_back(2);
     }
@@ -39,8 +39,8 @@ void solve()
         vals.push_back(1);
         vals.push_back(2);
         totalSum += 3;
-        vals.push_back((k - totalSum) / 2);
-        vals.push_back((k - totalSum) / 2);
+        vals.push_back((m - totalSum) / 2);
+        vals.push_back((m - totalSum) / 2);
     }
 
     cout << vals.size() << '\n';
