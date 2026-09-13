@@ -13,35 +13,31 @@ using namespace std;
 
 int main()
 {
-    // freopen("helpcross.in", "r", stdin);
-    // freopen("helpcross.out", "w", stdout);
+    freopen("helpcross.in", "r", stdin);
+    freopen("helpcross.out", "w", stdout);
     int c, n;
     cin >> c >> n;
-    priority_queue<int, vector<int>, greater<int>> chickens;
-    for (int i = 0; i < c; i++) {
-        int a;
-        cin >> a;
-        chickens.push(a);
-    }
-    vector<pair<int, int>> vals (n);
-    for (auto& v : vals) {
-        cin >> v.first >> v.second;
-    }
-    int answer = 0;
-    sort(vals.begin(), vals.end(), [](const pii& a, const pii& b){
-        if (a.first == b.first) {
-            return b.second < a.second;
+    vector<int> chickens (c);
+    vector<pii> vals (n);
+    for (auto& chicken : chickens) cin >> chicken;
+    for (auto& v : vals) cin >> v.first >> v.second;
+
+    sort(chickens.begin(), chickens.end());
+    sort(vals.begin(), vals.end());
+
+    int answer = 0, curr = 0;
+    priority_queue<int> available;
+    for (auto& ch : chickens) {
+        while (curr < vals.size() && vals[curr].first <= ch) {
+            available.push(-1 * vals[curr].second);
+            curr++;
         }
-        return a.first < b.first;
-    });
-    for (int i = 0; i < n; i++) {
-        int curr = chickens.top();
-        if (curr >= vals[i].first && curr <= vals[i].second) {
-            chickens.pop();
+        while (!available.empty() && (-1 * available.top()) < ch) {
+            available.pop();
+        }
+        if (!available.empty()) {
             answer++;
-        }
-        else if (curr < vals[i].first) {
-            chickens.pop();
+            available.pop();
         }
     }
     cout << answer << '\n';
