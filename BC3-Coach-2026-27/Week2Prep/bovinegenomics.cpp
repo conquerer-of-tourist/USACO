@@ -10,8 +10,8 @@ using namespace std;
 
 int main()
 {
-    // freopen("cownomics.in", "r", stdin);
-    // freopen("cownomics.out", "w", stdout);
+    freopen("cownomics.in", "r", stdin);
+    freopen("cownomics.out", "w", stdout);
     int n, m;
     cin >> n >> m;
 
@@ -20,12 +20,16 @@ int main()
 
     for (auto& cow : spotted) {
         for (auto& base : cow) {
-            cin >> base;
+            char a;
+            cin >> a;
+            base = a - 'A';
         }
     }
     for (auto& cow : normal) {
         for (auto& base : cow) {
-            cin >> base;
+            char a;
+            cin >> a;
+            base = a - 'A';
         }
     }
     int answer = 0;
