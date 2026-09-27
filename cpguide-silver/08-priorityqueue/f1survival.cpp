@@ -19,7 +19,5 @@ int main()
     for (auto& V : v) {
         cin >> V;
     }
-    ll total = (n) * (n - 1) / 2;
-
-    priority_queue<ll> vals;
+    //
 }
