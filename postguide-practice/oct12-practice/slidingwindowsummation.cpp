@@ -21,13 +21,7 @@ void solve()
         char a; cin >> a; val = (a == '0') ? 0 : 1;
     }
 
-    int currRange = 0;
-
-    ve<int> construction (n, 0);
-    // minimum
-    if (vals[0] % 2 == 1) {
-        //
-    }
+    //
 }
 
 int main()
