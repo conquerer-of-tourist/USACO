@@ -21,7 +21,13 @@ void solve()
         char a; cin >> a; val = (a == '0') ? 0 : 1;
     }
 
-    //
+    int currRange = 0;
+
+    ve<int> construction (n, 0);
+    // minimum
+    if (vals[0] % 2 == 1) {
+        //
+    }
 }
 
 int main()
@@ -104,5 +110,78 @@ do they have subtasks??
 
 LOL so they have one subtask for N \le 8, which I guess is okay
 but that's like 1/10th of the test cases so we better not do that
+
+okay let's take a look at what the third test case can tell us
+"100" for "5, 3"
+
+so we could greedy choose 111 for the first three, and then uh
+11101
+111
+ 110
+  101
+
+yeah so four works, and then we have the opposite:
+
+10000
+100
+ 000
+  000
+
+which also works, so this gives us 4 and 1
+
+so yeah lowk maybe this is the strategy here.
+basically something like:
+1. to maximize, fill up everything until you can no longer fill anything else
+2. to minimize, only fill the first index with a one
+    > and then you bash out the rest of it with a sliding window or something idk
+
+AAHAHAHAHAHA wait maybe this works idk
+the next could test cases are kinda weird..
+okay:
+5 5 0
+
+so we could uh
+do a greeedy alg like
+something like 11110, and that would work perfectly fine; so max at 4
+and then to minimize, just make something like uh
+so err
+yea like 00000, and this also works
+so this also gives us the correct answer
+
+and then for 4 4 1:
+min 1000
+max 1111
+
+WAIT i think this works...
+cannot figure. out a proof though...
+yeah this could actually be an issue
+
+test case
+wait last one
+yay
+
+wait no  5 5 1 should be 1, 5
+yeah it is okay good
+
+5 2 
+0000??????
+
+okay well we can try out the greedy idea here...
+lets see
+
+greedy:
+11111??
+11, etc.
+so this does indeed work
+
+and if you don't use this greedy, it doesn't give the same answer
+
+so wait yeah this might just be the answer!
+bruh i cant prove it
+i swear if i end up like taking 30 minutes to implement this,
+and if it doesnt end up being the correct solution......
+
+"sigh" 
+q.e.d. \square
 
 */
