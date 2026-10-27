@@ -144,3 +144,5 @@ Then, I used an LLM to debunk my theorems.
 
 ## After Help
 After utilizing an LLM (ChatGPT-5 High) to give me the key intuition, these are the main parts that I thought about again:
+
+## After Finished Solution
