@@ -3,8 +3,8 @@ using namespace std;
 
 int main()
 {
-    // freopen("outofplace.in", "r", stdin);
-    // freopen("outofplace.out", "w", stdout);
+    freopen("outofplace.in", "r", stdin);
+    freopen("outofplace.out", "w", stdout);
     
     int n;
     cin >> n;
@@ -21,11 +21,10 @@ int main()
 
     sort(sec.begin(), sec.end());
 
+    int diff = 0;
+    for (int i = 0; i < n; i++) {
+        diff += (sec[i] != vals[i]) ? 1 : 0;
+    }
+
+    cout << diff - 1 << '\n';
 }
-
-
-/*
-
-
-
-*/
