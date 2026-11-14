@@ -30,8 +30,8 @@ int main()
                 cout << cow << '\n';
                 continue;
             }
-            
-            curTime = 3 * cow - 1;
+
+            curTime = (cow == 0) ? 0 : (3 * cow - 1);
 
             while (curTime < t) {
                 ll tNext = curTime + 1 + ((curTime + 1) / 2);
@@ -54,7 +54,7 @@ int main()
                     t--;
                 }
                 else {
-                    int k = max((ll) 1, (t - 2 * pos) / 3);
+                    ll k = max((ll) 1, (t - 2 * pos) / 3);
                     pos = pos + k;
                     t = t - k;
                 }
