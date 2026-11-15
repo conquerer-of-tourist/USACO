@@ -12,4 +12,4 @@ Hence, values that are separated by $k$ are only dependent on each other in the 
 
 ## Thinking Process (During Solving)
 
-As of writing, I am also trying to solve the problem.
+As of writing, I am also trying to solve the problem... fuck, I can't solve it, and it's been over an hour. I actually quit.
