@@ -23,3 +23,5 @@ We can use an adjacency list of pairs of integers to store the edge relationship
 The rest of the solution follows very nicely with three cases; we either reach a contradiction where no $X$ works (meaning that the answer is $-1$), we have a fixed $X$ value and we need to check which rods can work, and when we have a range of $X$ values that work, in which case we slightly shift our $[L, R]$ bounds to accomodate this.
 
 A sliding window suffices for the rest of the solution, and we're done. $\square$
+
+(Ultimately, this problem is a very nice blend of graph theory and with a bit of sliding window/sweep line techniques.)
