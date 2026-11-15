@@ -13,3 +13,7 @@ Hence, values that are separated by $k$ are only dependent on each other in the 
 ## Thinking Process (During Solving)
 
 As of writing, I am also trying to solve the problem... fuck, I can't solve it, and it's been over an hour. I actually quit.
+
+## After
+
+I've spent like two hours doing this problem and I don't even want to write a solution anymore. It's just an easy solution. I don't even know why this is hard. It's not.
