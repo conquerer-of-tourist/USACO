@@ -20,7 +20,7 @@ void propogate (
     ve<int>& full,
     ve<int>& p,
     ve<ve<int>>& satisfied,
-    ve<maxHp> criterion,
+    ve<maxHp>& criterion,
     int& sumOfRanks,
     int& personID,
     int reqID
@@ -29,13 +29,14 @@ void propogate (
     int curr = satisfied[personID][reqID];
     if (criterion[curr].size() < full[curr]) {
         criterion[curr].push(personID);
-        sumOfRanks += personID;
+        sumOfRanks += personID + 1;
         return;
     }
 
     int displaced = 0;
     if (criterion[curr].top() > personID) {
         displaced = criterion[curr].top();
+        sumOfRanks += personID + 1;
         criterion[curr].pop();
         criterion[curr].push(personID);
     }
@@ -44,16 +45,16 @@ void propogate (
     }
 
     auto possibleNxt = lower_bound(satisfied[displaced].begin(),
-                                       satisfied[displaced].end(),
-                                       reqID);
+                                    satisfied[displaced].end(),
+                                    reqID);
+
+    sumOfRanks -= (displaced + 1);
 
     if (possibleNxt == satisfied[displaced].end()) {
         return;
     }
 
-    sumOfRanks = sumOfRanks - displaced;
-
-    int movedReq = (possibleNxt - satisfied[displaced].begin() - 1);
+    int movedReq = (possibleNxt - satisfied[displaced].begin() + 1);
     propogate(full, p, satisfied, criterion, sumOfRanks, displaced, movedReq);
     return;
 }
@@ -81,17 +82,22 @@ int main()
         for (int j = 0; j < numSat; j++) {
             int req;
             cin >> req;
+            req--;
             satisfied[i].push_back(req);
         }
-        sort(satisfied.begin(), satisfied.end());
+        sort(satisfied[i].begin(), satisfied[i].end());
     }
     
     ve<maxHp> criterion (c);
 
+    vector<int> answers (n);
     int sumOfRanks = 0;
     for (int i = n - 1; i >= 0; i--) {
-        propogate(full, p, satisfied, criterion, sumOfRanks, p[i], 0);
+        propogate(full, p, satisfied, criterion, sumOfRanks, p[i], satisfied[p[i]][0]);
         
-        cout << sumOfRanks << '\n';
+        answers.push_back(sumOfRanks);
+    }
+    for (int i = n - 1; i >= 0; i--) {
+        cout << answers[i] << '\n';
     }
 }
