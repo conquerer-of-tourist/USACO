@@ -23,11 +23,10 @@ void propogate (
     ve<maxHp>& criterion,
     ll& sumOfRanks,
     ll& personID,
-    ll reqID
+    ll curr
 
 ) {
-    ll curr = satisfied[personID][reqID];
-    if (criterion[curr].size() < full[curr]) {
+    if ((ll) criterion[curr].size() < (ll) full[curr]) {
         criterion[curr].push(personID);
         sumOfRanks += personID + 1;
         return;
@@ -48,13 +47,14 @@ void propogate (
 
     auto possibleNxt = lower_bound(satisfied[displaced].begin(),
                                     satisfied[displaced].end(),
-                                    reqID + 1);
+                                    curr + 1);
 
     if (possibleNxt == satisfied[displaced].end()) {
         return;
     }
 
-    ll movedReq = (possibleNxt - satisfied[displaced].begin() + 1);
+    ll movedReq = satisfied[displaced][(possibleNxt - 
+                  satisfied[displaced].begin())];
     propogate(full, p, satisfied, criterion, sumOfRanks, displaced, movedReq);
     return;
 }
