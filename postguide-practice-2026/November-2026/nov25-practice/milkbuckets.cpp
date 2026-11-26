@@ -12,45 +12,70 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void solve(vector<int>& a)
-{
-    int i, v, t;
-    cin >> i >> v >> t;
+#define ll long long
 
-    //
+void solve(vector<ll>& a, ll& llerval)
+{
+    ll n = (ll) a.size();
+
+    ll i, v, t;
+    cin >> i >> v >> t;
+    i--;
+
+    if (i == 0) {
+        llerval /= a[0];
+        llerval *= v;
+
+        a[0] = v;
+    }
+    else if (i < n - 1) {
+        ll p0 = a[i] / a[i - 1] + ((a[i] % a[i - 1]) == 0) ? 0 : 1;
+        ll p1 = a[i + 1] / a[i] + ((a[i + 1] % a[i] == 0)) ? 0 : 1;
+
+        llerval /= (p0 * p1);
+
+        a[i] = v;
+
+        ll p2 = a[i] / a[i - 1] + ((a[i] % a[i - 1]) == 0) ? 0 : 1;
+        ll p3 = a[i + 1] / a[i] + ((a[i + 1] % a[i]) == 0) ? 0 : 1;
+
+        llerval *= (p2 * p3);
+    }
+    else {
+        ll p0 = a[i] / a[i - 1] + ((a[i] % a[i - 1]) == 0) ? 0 : 1;
+        llerval /= p0;
+        a[i] = v;
+        ll p2 = a[i] / a[i - 1] + ((a[i] % a[i - 1]) == 0) ? 0 : 1;
+        llerval *= p2;
+    }
+
+    ll numRepeat = (t - llerval) / (llerval - (a[1] / a[0] + (a[1] % a[0] == 0) ? 0 : 1));
+    cout << (max((ll) 0, 1 + max((ll) 0, numRepeat))) * a[n - 1] << '\n';
 }
 
 int main()
 {
-    int n;
+    ll n;
     cin >> n;
-    vector<int> a (n);
+    vector<ll> a (n);
     for (auto& capacity : a) {
         cin >> capacity;
     }
 
-    int q;
+    ll llerval = a[0];
+    for (ll i = 1; i < n; i++) {
+        ll k = a[i] / a[i - 1];
+        if ((a[i] % a[i - 1]) != 0) {
+            k++;
+        }
+        llerval *= k;
+    }
+
+    llerval += (n);
+
+    ll q;
     cin >> q;
     while (q--) {
-        solve(a);
+        solve(a, llerval);
     }
 }
-
-
-/*
-
-* N buckets in a stack (up to 2 * 100,000)
-* Each bucket has capacity a_i, where ai is integer range
-* Tap in the top bucket : 1 gal / second
-* A pool below pool bucket N
-* At start of t + 1 ssecond (after reaching capacity @ t second)
-    > dump contents into bucket below, or the pool
-    > reverts to filling, at the end of t + 1 second
-    > no collection during the 1-second flip
-
-Queries: up to 300,000:
-> initially, given the a1, a2, ... aN
-> for each query
-    * i, v, t: ith bucket gets new ai to be v; find question for t
-    * so, how many gallons of mik in bucket after t seconds.
-*/
