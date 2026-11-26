@@ -14,6 +14,10 @@ using namespace std;
 
 #define ll long long
 
+ll ceiling(ll a, ll b) {
+    return (a / b) + ((a % b == 0) ? 0 : 1);
+}
+
 void solve(vector<ll>& a, ll& llerval)
 {
     ll n = (ll) a.size();
@@ -22,35 +26,46 @@ void solve(vector<ll>& a, ll& llerval)
     cin >> i >> v >> t;
     i--;
 
+    llerval -= (n - 1);
+
     if (i == 0) {
-        llerval /= a[0];
-        llerval *= v;
+        llerval /= (a[0] + 1);
+        llerval *= (v + 1);
+        llerval /= ceiling(a[1], a[0]);
 
         a[0] = v;
+        llerval *= ceiling(a[1], a[0]);
     }
     else if (i < n - 1) {
-        ll p0 = a[i] / a[i - 1] + ((a[i] % a[i - 1]) == 0) ? 0 : 1;
-        ll p1 = a[i + 1] / a[i] + ((a[i + 1] % a[i] == 0)) ? 0 : 1;
+        ll p0 = ceiling(a[i], a[i - 1]);
+        ll p1 = ceiling(a[i + 1], a[i]);
 
         llerval /= (p0 * p1);
 
         a[i] = v;
-
-        ll p2 = a[i] / a[i - 1] + ((a[i] % a[i - 1]) == 0) ? 0 : 1;
-        ll p3 = a[i + 1] / a[i] + ((a[i + 1] % a[i]) == 0) ? 0 : 1;
+        ll p2 = ceiling(a[i], a[i - 1]);
+        ll p3 = ceiling(a[i + 1], a[i]);
 
         llerval *= (p2 * p3);
     }
     else {
-        ll p0 = a[i] / a[i - 1] + ((a[i] % a[i - 1]) == 0) ? 0 : 1;
+        ll p0 = ceiling(a[i], a[i - 1]);
         llerval /= p0;
         a[i] = v;
-        ll p2 = a[i] / a[i - 1] + ((a[i] % a[i - 1]) == 0) ? 0 : 1;
+        ll p2 = ceiling(a[i], a[i - 1]);
         llerval *= p2;
     }
 
-    ll numRepeat = (t - llerval) / (llerval - (a[1] / a[0] + (a[1] % a[0] == 0) ? 0 : 1));
-    cout << (max((ll) 0, 1 + max((ll) 0, numRepeat))) * a[n - 1] << '\n';
+    llerval += (n - 1);
+
+    ll numRepeat = (t - llerval) / (llerval - (n - 1));
+    ll numGet    = 0;
+
+    if (t >= llerval) {
+        numGet = 1 + numRepeat;
+    }
+
+    cout << numGet * a[n - 1] << '\n';
 }
 
 int main()
@@ -62,16 +77,12 @@ int main()
         cin >> capacity;
     }
 
-    ll llerval = a[0];
+    ll llerval = a[0] + 1;
     for (ll i = 1; i < n; i++) {
-        ll k = a[i] / a[i - 1];
-        if ((a[i] % a[i - 1]) != 0) {
-            k++;
-        }
-        llerval *= k;
+        llerval *= ceiling(a[i], a[i - 1]);
     }
 
-    llerval += (n);
+    llerval += (n - 1);
 
     ll q;
     cin >> q;
